@@ -1,0 +1,35 @@
+{
+  "name": "z.gg",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "client-dev": "npx webpack --watch",
+    "server-dev": "npx nodemon --watch server server/index.js",
+    "start": "node server/index.js",
+    "build": "npx webpack"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Zynh0722/z.gg.git"
+  },
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Zynh0722/z.gg/issues"
+  },
+  "homepage": "https://github.com/Zynh0722/z.gg#readme",
+  "dependencies": {
+    "@babel/preset-env": "^7.17.10",
+    "@babel/preset-react": "^7.16.7",
+    "babel-loader": "^8.2.5",
+    "react": "^18.1.0",
+    "react-dom": "^18.1.0",
+    "webpack": "^5.72.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.16",
+    "webpack-cli": "^4.9.2"
+  }
+}
