@@ -12,14 +12,28 @@ app.use(express.static(__dirname + '/../client/dist'));
 
 let currentVersion;
 
-axios.get('https://ddragon.leagueoflegends.com/api/versions.json')
-    .then(response => currentVersion = response.data[0])
-    .then(() => {
-      axios.get(`https://ddragon.leagueoflegends.com/cdn/${currentVersion}/data/en_US/champion/Aatrox.json`)
-        .then(response => console.log(util.inspect(response.data.data, false, null, true)));
-    });
+require('./util/getLatestVersion')
+    .then(version => currentVersion = version)
+    .then(() => console.log(`Current version: ${currentVersion}`));
 
-    
+app.get('/champions/:champion', (req, res) => {
+  const champion = req.params.champion;
+  const version = req.query.version || currentVersion;
+  const url = `https://ddragon.leagueoflegends.com/cdn/${version}/data/en_US/champion/${champion}.json`;
+  axios.get(url)
+    .then(response => res.send(response.data.data[champion]))
+    .catch(err => res.status(500).send(err));
+});
+
+app.get('/champions', (req, res) => {
+  const version = req.query.version || currentVersion;
+  const url = `https://ddragon.leagueoflegends.com/cdn/${version}/data/en_US/champion.json`;
+  axios.get(url)
+    .then(response => res.send(Object.keys(response.data.data)))
+    .catch(err => res.status(500).send(err));
+});
+
+app.get('/version', (req, res) => res.send(currentVersion));
 
 app.listen(3000, () => {
   console.log(`App listening on http://localhost:${3000}/`);
