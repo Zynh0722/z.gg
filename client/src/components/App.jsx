@@ -1,22 +1,23 @@
-import React from "react";
+import { useEffect, useState } from "react";
 
 import { Autocomplete, TextField, Typography } from "@mui/material";
 
 import axios from "axios";
 
+import ChampionSummary from "./ChampionSummary";
 import Ability from "./Ability";
 
 export default function App() {
-  const [champions, setChampions] = React.useState([]);
-  const [champion, setChampion] = React.useState("");
-  const [championData, setChampionData] = React.useState("");
+  const [champions, setChampions] = useState([]);
+  const [champion, setChampion] = useState("");
+  const [championData, setChampionData] = useState("");
 
-  React.useEffect(() => {
+  useEffect(() => {
     axios.get("/champions")
       .then(({ data }) => setChampions(data));
   }, []);
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (champion) {
       axios.get(`/champions/${champion}`)
         .then(({ data }) => setChampionData(data));
@@ -46,28 +47,8 @@ export default function App() {
 
       />
 
-      <div>
-        {championData && (
-          <div>
-            <div style={{ display: "flex"}}>
-
-              <img src={`http://ddragon.leagueoflegends.com/cdn/12.8.1/img/champion/${championData.image.full}`} alt={championData.name} />
-
-              <div style={{ 
-                marginLeft: "1rem", 
-                display: "flex", 
-                flexDirection: "column", 
-                alignSelf: "center" 
-              }}>
-                <Typography variant="h5">{championData.name}, {championData.title}</Typography>
-                <div style={{ alignSelf: "center", fontSize: "1.25em", fontFamily: "Roboto" }}>
-                  {championData.tags.join(" - ")}
-                </div>
-              </div>
-            </div>
-          </div>
-        )}
-      </div>
+      {championData && 
+        <ChampionSummary championData={championData} />}
 
       {championData && 
         <Ability 
@@ -81,11 +62,11 @@ export default function App() {
             abilityButton={{ 0: 'Q', 1: 'W', 2: 'E', 3: 'R' }[key]} 
             key={spell.id} />)}
 
-      <div>
-        {championData && (
+      {championData && (
+        <div>
           <Typography variant="body1">{championData.lore}</Typography>
-        )}
-      </div>
+        </div>
+      )}
 
     </div>
   );  
