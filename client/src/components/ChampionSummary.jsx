@@ -1,14 +1,19 @@
 import React from "react";
+import PropTypes from "prop-types";
+
 import { Typography } from "@mui/material";
 
-export default function ChampionSummary({ championData }) {
+export default function ChampionSummary({ championData, version }) {
   return (
     <div style={{
       padding: "0.5em",
     }}>
       <div style={{ display: "flex"}}>
 
-        <img src={`http://ddragon.leagueoflegends.com/cdn/12.8.1/img/champion/${championData.image.full}`} alt={championData.name} style={{boxShadow: "0px 0px 5px #333"}} />
+        <img 
+          src={`http://ddragon.leagueoflegends.com/cdn/${version}/img/champion/${championData.image.full}`} 
+          alt={championData.name} 
+          style={{boxShadow: "0px 0px 5px #333"}} />
 
         <div style={{ 
           marginLeft: "1rem", 
@@ -24,4 +29,9 @@ export default function ChampionSummary({ championData }) {
       </div>
     </div>
   );
+}
+
+ChampionSummary.protoTypes = {
+  championData: PropTypes.object.isRequired,
+  version: PropTypes.string.isRequired
 }

@@ -37,9 +37,9 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 
 function Ability(_ref) {
   var spell = _ref.spell,
-      abilityButton = _ref.abilityButton;
+      abilityButton = _ref.abilityButton,
+      version = _ref.version;
 
-  // console.log([...new Set(spell.cooldown)]);
   if (_toConsumableArray(new Set(spell.cooldown)).length === 1) {
     spell.cooldown = [spell.cooldown[0]];
   }
@@ -52,7 +52,7 @@ function Ability(_ref) {
     },
     children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("div", {
       style: {
-        backgroundImage: "url(http://ddragon.leagueoflegends.com/cdn/12.8.1/img/".concat(abilityButton === 'P' ? 'passive' : 'spell', "/").concat(spell.image.full, ")"),
+        backgroundImage: "url(http://ddragon.leagueoflegends.com/cdn/".concat(version, "/img/").concat(abilityButton === 'P' ? 'passive' : 'spell', "/").concat(spell.image.full, ")"),
         backgroundSize: "cover",
         backgroundRepeat: "no-repeat",
         backgroundPosition: "center",
@@ -94,7 +94,8 @@ function Ability(_ref) {
 }
 Ability.propTypes = {
   spell: (prop_types__WEBPACK_IMPORTED_MODULE_3___default().object.isRequired),
-  abilityButton: (prop_types__WEBPACK_IMPORTED_MODULE_3___default().string.isRequired)
+  abilityButton: (prop_types__WEBPACK_IMPORTED_MODULE_3___default().string.isRequired),
+  version: (prop_types__WEBPACK_IMPORTED_MODULE_3___default().string.isRequired)
 };
 
 /***/ }),
@@ -145,6 +146,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 
 
+
 function App() {
   var _useState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)([]),
       _useState2 = _slicedToArray(_useState, 2),
@@ -161,78 +163,99 @@ function App() {
       championData = _useState6[0],
       setChampionData = _useState6[1];
 
+  var _useState7 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)("Unknown"),
+      _useState8 = _slicedToArray(_useState7, 2),
+      version = _useState8[0],
+      setVersion = _useState8[1];
+
   (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function () {
-    axios__WEBPACK_IMPORTED_MODULE_1___default().get("/champions").then(function (_ref) {
+    axios__WEBPACK_IMPORTED_MODULE_1___default().get("/version").then(function (_ref) {
       var data = _ref.data;
+      return setVersion(data);
+    });
+    axios__WEBPACK_IMPORTED_MODULE_1___default().get("/champions").then(function (_ref2) {
+      var data = _ref2.data;
       return setChampions(data);
     });
   }, []);
   (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function () {
     if (champion) {
-      axios__WEBPACK_IMPORTED_MODULE_1___default().get("/champions/".concat(champion)).then(function (_ref2) {
-        var data = _ref2.data;
+      axios__WEBPACK_IMPORTED_MODULE_1___default().get("/champions/".concat(champion)).then(function (_ref3) {
+        var data = _ref3.data;
         return setChampionData(data);
       });
     }
   }, [champion]);
 
-  var handleChampionChange = function handleChampionChange(event, _ref3) {
-    var name = _ref3.name;
+  var handleChampionChange = function handleChampionChange(event, _ref4) {
+    var name = _ref4.name;
     setChampion(name);
   };
 
-  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
-    style: {
-      padding: "1em",
-      width: "600px"
-    },
-    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_mui_material__WEBPACK_IMPORTED_MODULE_5__["default"], {
-      variant: "h1",
+  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.Fragment, {
+    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)(_mui_material__WEBPACK_IMPORTED_MODULE_5__["default"], {
       style: {
-        fontSize: "3em",
-        textAlign: "center"
+        position: "absolute",
+        padding: "1em"
       },
-      children: "Z.gg"
-    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_mui_material__WEBPACK_IMPORTED_MODULE_6__["default"], {
-      disablePortal: true,
-      openOnFocus: true,
-      selectOnFocus: true,
-      autoHighlight: true,
-      id: "champion-autocomplete",
-      options: champions,
-      value: champion.name,
-      getOptionLabel: function getOptionLabel(option) {
-        return option.label || "";
-      },
-      renderInput: function renderInput(params) {
-        return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_mui_material__WEBPACK_IMPORTED_MODULE_7__["default"], _objectSpread(_objectSpread({}, params), {}, {
-          label: "Champion"
-        }));
-      },
-      onChange: handleChampionChange,
+      variant: "body2",
+      children: ["Version: ", version]
+    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
       style: {
-        marginTop: "1em"
-      }
-    }), championData && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_ChampionSummary__WEBPACK_IMPORTED_MODULE_2__["default"], {
-      championData: championData
-    }), championData && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_Ability__WEBPACK_IMPORTED_MODULE_3__["default"], {
-      spell: championData.passive,
-      abilityButton: "P"
-    }), championData && championData.spells.map(function (spell, key) {
-      return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_Ability__WEBPACK_IMPORTED_MODULE_3__["default"], {
-        spell: spell,
-        abilityButton: {
-          0: 'Q',
-          1: 'W',
-          2: 'E',
-          3: 'R'
-        }[key]
-      }, spell.id);
-    }), championData && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
-      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_mui_material__WEBPACK_IMPORTED_MODULE_5__["default"], {
-        variant: "body1",
-        children: championData.lore
-      })
+        padding: "1em",
+        width: "600px"
+      },
+      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_mui_material__WEBPACK_IMPORTED_MODULE_5__["default"], {
+        variant: "h1",
+        style: {
+          fontSize: "3em",
+          textAlign: "center"
+        },
+        children: "Z.gg"
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_mui_material__WEBPACK_IMPORTED_MODULE_6__["default"], {
+        disablePortal: true,
+        openOnFocus: true,
+        selectOnFocus: true,
+        autoHighlight: true,
+        id: "champion-autocomplete",
+        options: champions,
+        value: champion.name,
+        getOptionLabel: function getOptionLabel(option) {
+          return option.label || "";
+        },
+        renderInput: function renderInput(params) {
+          return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_mui_material__WEBPACK_IMPORTED_MODULE_7__["default"], _objectSpread(_objectSpread({}, params), {}, {
+            label: "Champion"
+          }));
+        },
+        onChange: handleChampionChange,
+        style: {
+          marginTop: "1em"
+        }
+      }), championData && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_ChampionSummary__WEBPACK_IMPORTED_MODULE_2__["default"], {
+        championData: championData,
+        version: version
+      }), championData && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_Ability__WEBPACK_IMPORTED_MODULE_3__["default"], {
+        spell: championData.passive,
+        abilityButton: "P",
+        version: version
+      }), championData && championData.spells.map(function (spell, key) {
+        return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_Ability__WEBPACK_IMPORTED_MODULE_3__["default"], {
+          spell: spell,
+          abilityButton: {
+            0: 'Q',
+            1: 'W',
+            2: 'E',
+            3: 'R'
+          }[key],
+          version: version
+        }, spell.id);
+      }), championData && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
+        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_mui_material__WEBPACK_IMPORTED_MODULE_5__["default"], {
+          variant: "body1",
+          children: championData.lore
+        })
+      })]
     })]
   });
 }
@@ -252,14 +275,18 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! prop-types */ "./node_modules/prop-types/index.js");
+/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(prop_types__WEBPACK_IMPORTED_MODULE_3__);
 /* harmony import */ var _mui_material__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @mui/material */ "./node_modules/@mui/material/Typography/Typography.js");
 /* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
 
 
 
 
+
 function ChampionSummary(_ref) {
-  var championData = _ref.championData;
+  var championData = _ref.championData,
+      version = _ref.version;
   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("div", {
     style: {
       padding: "0.5em"
@@ -269,7 +296,7 @@ function ChampionSummary(_ref) {
         display: "flex"
       },
       children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("img", {
-        src: "http://ddragon.leagueoflegends.com/cdn/12.8.1/img/champion/".concat(championData.image.full),
+        src: "http://ddragon.leagueoflegends.com/cdn/".concat(version, "/img/champion/").concat(championData.image.full),
         alt: championData.name,
         style: {
           boxShadow: "0px 0px 5px #333"
@@ -296,6 +323,10 @@ function ChampionSummary(_ref) {
     })
   });
 }
+ChampionSummary.protoTypes = {
+  championData: (prop_types__WEBPACK_IMPORTED_MODULE_3___default().object.isRequired),
+  version: (prop_types__WEBPACK_IMPORTED_MODULE_3___default().string.isRequired)
+};
 
 /***/ }),
 

@@ -1,9 +1,9 @@
 import React from "react";
 import PropTypes from "prop-types";
+
 import { Typography } from "@mui/material";
 
-export default function Ability({ spell, abilityButton }) {
-  // console.log([...new Set(spell.cooldown)]);
+export default function Ability({ spell, abilityButton, version }) {
   if ([...new Set(spell.cooldown)].length === 1) {
     spell.cooldown = [spell.cooldown[0]];
   }
@@ -11,7 +11,7 @@ export default function Ability({ spell, abilityButton }) {
   return (
       <div style={{ padding: "0.5em", display: "flex", flexDirection: "row" }}>
         <div style={{
-            backgroundImage: `url(http://ddragon.leagueoflegends.com/cdn/12.8.1/img/${abilityButton === 'P' ? 'passive' : 'spell'}/${spell.image.full})`, 
+            backgroundImage: `url(http://ddragon.leagueoflegends.com/cdn/${version}/img/${abilityButton === 'P' ? 'passive' : 'spell'}/${spell.image.full})`, 
             backgroundSize: "cover", 
             backgroundRepeat: "no-repeat", 
             backgroundPosition: "center",
@@ -49,5 +49,6 @@ export default function Ability({ spell, abilityButton }) {
 
 Ability.propTypes = {
   spell: PropTypes.object.isRequired,
-  abilityButton: PropTypes.string.isRequired
+  abilityButton: PropTypes.string.isRequired,
+  version: PropTypes.string.isRequired
 }

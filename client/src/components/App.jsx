@@ -11,8 +11,12 @@ export default function App() {
   const [champions, setChampions] = useState([]);
   const [champion, setChampion] = useState("");
   const [championData, setChampionData] = useState("");
+  const [version, setVersion] = useState("Unknown");
 
   useEffect(() => {
+    axios.get("/version")
+      .then(({ data }) => setVersion(data));
+
     axios.get("/champions")
       .then(({ data }) => setChampions(data));
   }, []);
@@ -29,45 +33,57 @@ export default function App() {
   }
 
   return (
-    <div style={{ padding: "1em", width: "600px" }}>
-      <Typography variant="h1" style={{ fontSize: "3em", textAlign: "center" }}>Z.gg</Typography>
+    <>
+      <Typography 
+        style={{
+          position: "absolute",
+          padding: "1em",
+        }}
+        variant="body2">Version: {version}</Typography>
+      <div style={{ padding: "1em", width: "600px" }}>
+        <Typography variant="h1" style={{ fontSize: "3em", textAlign: "center" }}>Z.gg</Typography>
 
-      <Autocomplete
-        disablePortal
-        openOnFocus
-        selectOnFocus
-        autoHighlight
-        id="champion-autocomplete"
-        options={champions}
-        value={champion.name}
-        getOptionLabel={(option) => option.label || ""}
-        renderInput={(params) => <TextField {...params} label="Champion" />}
-        onChange={handleChampionChange}
-        style={{ marginTop: "1em" }}
+        <Autocomplete
+          disablePortal
+          openOnFocus
+          selectOnFocus
+          autoHighlight
+          id="champion-autocomplete"
+          options={champions}
+          value={champion.name}
+          getOptionLabel={(option) => option.label || ""}
+          renderInput={(params) => <TextField {...params} label="Champion" />}
+          onChange={handleChampionChange}
+          style={{ marginTop: "1em" }}
 
-      />
+        />
 
-      {championData && 
-        <ChampionSummary championData={championData} />}
+        {championData && 
+          <ChampionSummary 
+            championData={championData} 
+            version={version} />}
 
-      {championData && 
-        <Ability 
-          spell={championData.passive} 
-          abilityButton="P" />}
-
-      {championData && 
-        championData.spells.map((spell, key) => 
+        {championData && 
           <Ability 
-            spell={spell}
-            abilityButton={{ 0: 'Q', 1: 'W', 2: 'E', 3: 'R' }[key]} 
-            key={spell.id} />)}
+            spell={championData.passive} 
+            abilityButton="P"
+            version={version} />}
 
-      {championData && (
-        <div>
-          <Typography variant="body1">{championData.lore}</Typography>
-        </div>
-      )}
+        {championData && 
+          championData.spells.map((spell, key) => 
+            <Ability 
+              spell={spell}
+              abilityButton={{ 0: 'Q', 1: 'W', 2: 'E', 3: 'R' }[key]} 
+              version={version}
+              key={spell.id} />)}
 
-    </div>
+        {championData && (
+          <div>
+            <Typography variant="body1">{championData.lore}</Typography>
+          </div>
+        )}
+
+      </div>
+    </>
   );  
 }
