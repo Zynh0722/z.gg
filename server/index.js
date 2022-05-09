@@ -29,7 +29,8 @@ app.get('/champions', (req, res) => {
   const version = req.query.version || currentVersion;
   const url = `https://ddragon.leagueoflegends.com/cdn/${version}/data/en_US/champion.json`;
   axios.get(url)
-    .then(response => res.send(Object.keys(response.data.data)))
+    .then(response => res.send(Object.keys(response.data.data)
+      .map(key => ({ label: response.data.data[key].name, name: key }))))
     .catch(err => res.status(500).send(err));
 });
 
