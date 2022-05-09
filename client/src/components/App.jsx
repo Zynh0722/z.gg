@@ -4,6 +4,8 @@ import { Autocomplete, TextField, Typography } from "@mui/material";
 
 import axios from "axios";
 
+import Ability from "./Ability";
+
 export default function App() {
   const [champions, setChampions] = React.useState([]);
   const [champion, setChampion] = React.useState("");
@@ -26,8 +28,8 @@ export default function App() {
   }
 
   return (
-    <div>
-      <h1>Z.gg</h1>
+    <div style={{ padding: "1em", width: "600px" }}>
+      <Typography variant="h1" style={{ fontSize: "3em", textAlign: "center" }}>Z.gg</Typography>
 
       <Autocomplete
         disablePortal
@@ -40,6 +42,8 @@ export default function App() {
         getOptionLabel={(option) => option.label || ""}
         renderInput={(params) => <TextField {...params} label="Champion" />}
         onChange={handleChampionChange}
+        style={{ marginTop: "1em" }}
+
       />
 
       <div>
@@ -55,9 +59,9 @@ export default function App() {
                 flexDirection: "column", 
                 alignSelf: "center" 
               }}>
-                <h2>{championData.name}, {championData.title}</h2>
-                <div style={{ alignSelf: "center", fontSize: "1.5em" }}>
-                  {championData.tags.join(", ")}
+                <Typography variant="h5">{championData.name}, {championData.title}</Typography>
+                <div style={{ alignSelf: "center", fontSize: "1.25em", fontFamily: "Roboto" }}>
+                  {championData.tags.join(" - ")}
                 </div>
               </div>
             </div>
@@ -65,54 +69,21 @@ export default function App() {
         )}
       </div>
 
-      <div>
-        {championData && (
-          <div>
-            <h3>Q, {championData.spells[0].name}</h3>
-            <img src={`http://ddragon.leagueoflegends.com/cdn/12.8.1/img/spell/${championData.spells[0].image.full}`} alt={championData.name} />
-          </div>
-        )}
-      </div>
+      {championData && 
+        <Ability 
+          spell={championData.passive} 
+          abilityButton="P" />}
+
+      {championData && 
+        championData.spells.map((spell, key) => 
+          <Ability 
+            spell={spell}
+            abilityButton={{ 0: 'Q', 1: 'W', 2: 'E', 3: 'R' }[key]} 
+            key={spell.id} />)}
 
       <div>
         {championData && (
-          <div>
-            <h3>W, {championData.spells[1].name}</h3>
-            <img src={`http://ddragon.leagueoflegends.com/cdn/12.8.1/img/spell/${championData.spells[1].image.full}`} alt={championData.name} />
-          </div>
-        )}
-      </div>
-
-      <div>
-        {championData && (
-          <div>
-            <h3>E, {championData.spells[2].name}</h3>
-            <img src={`http://ddragon.leagueoflegends.com/cdn/12.8.1/img/spell/${championData.spells[2].image.full}`} alt={championData.name} />
-          </div>
-        )}
-      </div>
-
-      <div>
-        {championData && (
-          <div>
-            <h3>R, {championData.spells[3].name}</h3>
-            <img src={`http://ddragon.leagueoflegends.com/cdn/12.8.1/img/spell/${championData.spells[3].image.full}`} alt={championData.name} />
-          </div>
-        )}
-      </div>  
-
-      <div>
-        {championData && (
-          <div>
-            <h3>Passive, {championData.passive.name}</h3>
-            <img src={`http://ddragon.leagueoflegends.com/cdn/12.8.1/img/passive/${championData.passive.image.full}`} alt={championData.name} />
-          </div>
-        )}
-      </div>
-
-      <div>
-        {championData && (
-          <Typography variant="caption">{championData.lore}</Typography>
+          <Typography variant="body1">{championData.lore}</Typography>
         )}
       </div>
 
