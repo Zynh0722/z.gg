@@ -53,9 +53,9 @@ export default function App() {
           value={champion.name}
           getOptionLabel={(option) => option.label || ""}
           renderInput={(params) => <TextField {...params} label="Champion" />}
+          groupBy={(option) => option.name[0]}
           onChange={handleChampionChange}
           style={{ marginTop: "1em" }}
-
         />
 
         {championData && 

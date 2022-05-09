@@ -228,6 +228,9 @@ function App() {
             label: "Champion"
           }));
         },
+        groupBy: function groupBy(option) {
+          return option.name[0];
+        },
         onChange: handleChampionChange,
         style: {
           marginTop: "1em"
