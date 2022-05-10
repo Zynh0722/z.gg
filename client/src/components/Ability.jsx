@@ -44,12 +44,13 @@ export default function Ability({ spell, abilityButton, version }) {
             <Typography
               key={index}
               variant="caption"
+              component="p"
               style={{
                 marginTop: "0.5em",
                 marginBottom: "0.5em"
               }}
-            >
-              {line}
+              dangerouslySetInnerHTML={{ __html: line.replace(/<font color='(.*)'>(.*?)<\/font>/, '<span style=\'color:$1\'>$2</span>') }}
+              >
             </Typography>
           ))}
         </div>
