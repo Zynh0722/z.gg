@@ -40,7 +40,7 @@ export default function App() {
           padding: "1em",
         }}
         variant="body2">Version: {version}</Typography>
-      <div style={{ padding: "1em", width: "600px" }}>
+      <div style={{ padding: "1em", maxWidth: "600px" }}>
         <Typography variant="h1" style={{ fontSize: "3em", textAlign: "center" }}>Z.gg</Typography>
 
         <Autocomplete
