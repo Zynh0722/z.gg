@@ -28,7 +28,7 @@ export default function Ability({ spell, abilityButton, version }) {
           flexDirection: "column",
           marginLeft: "1rem"
         }}>
-          <div style={{ display: "inline-flex" }}>
+          <div style={{ display: "inline-flex", flexWrap: "wrap" }}>
             <Typography variant="h6">{abilityButton} - {spell.name}</Typography>
             <Typography 
               variant="h6"
