@@ -2,12 +2,15 @@ const express = require('express');
 const app = express();
 
 const util = require('util');
+const favicon = require('serve-favicon')
+const path = require('path');
 
 const axios = require('axios');
 
 // const db = require('./db/database');
 
 app.use(express.json());
+app.use(favicon(path.join(__dirname, 'assets', 'favicon.ico')))
 app.use(express.static(__dirname + '/../client/dist'));
 
 let currentVersion;
