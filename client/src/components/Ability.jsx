@@ -40,7 +40,19 @@ export default function Ability({ spell, abilityButton, version }) {
               {spell.cooldown && spell.cooldown.join(" / ")}
             </Typography>
           </div>
-          <Typography variant="caption">{spell.description}</Typography>
+          {spell.description.split('<br>').map((line, index) => (
+            <Typography
+              key={index}
+              variant="caption"
+              style={{
+                marginTop: "0.5em",
+                marginBottom: "0.5em"
+              }}
+            >
+              {line}
+            </Typography>
+          ))}
+          {/* <Typography variant="caption">{spell.description}</Typography> */}
         </div>
       </div>
       
