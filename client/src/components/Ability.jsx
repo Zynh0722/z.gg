@@ -52,7 +52,6 @@ export default function Ability({ spell, abilityButton, version }) {
               {line}
             </Typography>
           ))}
-          {/* <Typography variant="caption">{spell.description}</Typography> */}
         </div>
       </div>
       
