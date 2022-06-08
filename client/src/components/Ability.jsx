@@ -11,7 +11,7 @@ export default function Ability({ spell, abilityButton, version }) {
   return (
       <div style={{ padding: "0.5em", display: "flex", flexDirection: "row" }}>
         <div style={{
-            backgroundImage: `url(http://ddragon.leagueoflegends.com/cdn/${version}/img/${abilityButton === 'P' ? 'passive' : 'spell'}/${spell.image.full})`, 
+            backgroundImage: `url(https://ddragon.leagueoflegends.com/cdn/${version}/img/${abilityButton === 'P' ? 'passive' : 'spell'}/${spell.image.full})`, 
             backgroundSize: "cover", 
             backgroundRepeat: "no-repeat", 
             backgroundPosition: "center",
