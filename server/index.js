@@ -9,6 +9,8 @@ const axios = require('axios');
 
 // const db = require('./db/database');
 
+const PORT = process.env.PORT || 5000;
+
 app.use(express.json());
 app.use(favicon(path.join(__dirname, 'assets', 'favicon.ico')))
 app.use(express.static(__dirname + '/../client/dist'));
@@ -39,6 +41,6 @@ app.get('/champions', (req, res) => {
 
 app.get('/version', (req, res) => res.send(currentVersion));
 
-app.listen(3000, () => {
-  console.log(`App listening on http://localhost:${3000}/`);
+app.listen(PORT, () => {
+  console.log(`App listening on http://localhost:${PORT}/`);
 });
