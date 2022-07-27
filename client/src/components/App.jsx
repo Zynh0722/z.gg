@@ -7,9 +7,21 @@ import axios from "axios";
 import ChampionSummary from "./ChampionSummary";
 import Ability from "./Ability";
 
+const useLocalStorage = (storageKey, fallbackState) => {
+  const [value, setValue] = useState(
+    JSON.parse(localStorage.getItem(storageKey)) ?? fallbackState
+  );
+
+  useEffect(() => {
+    localStorage.setItem(storageKey, JSON.stringify(value));
+  }, [value, storageKey]);
+
+  return [value, setValue];
+};
+
 export default function App() {
   const [champions, setChampions] = useState([]);
-  const [champion, setChampion] = useState("");
+  const [champion, setChampion] = useLocalStorage("champion", "");
   const [championData, setChampionData] = useState("");
   const [version, setVersion] = useState("Unknown");
 
