@@ -49,7 +49,7 @@ export default function Ability({ spell, abilityButton, version }) {
                 marginTop: "0.5em",
                 marginBottom: "0.5em"
               }}
-              dangerouslySetInnerHTML={{ __html: line.replace(/<font color='(.*?)'>(.*?)<\/font>/g, '<span style=\'color:$1; background-color:#404040; border-radius:5px; padding: 2px 4px;\'>$2</span>') }}
+              dangerouslySetInnerHTML={{ __html: line.replace(/<font color='(.*?)'>(.*?)<\/font>/g, '<span style=\'color:$1; background-color:#262626; border-radius:5px; padding: 2px 4px;\'>$2</span>') }}
               >
             </Typography>
           ))}
