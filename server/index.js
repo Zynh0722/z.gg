@@ -6,6 +6,7 @@ const favicon = require('serve-favicon')
 const path = require('path');
 
 const axios = require('axios');
+var cron = require('node-cron');
 
 // const db = require('./db/database');
 
@@ -17,9 +18,16 @@ app.use(express.static(__dirname + '/../client/dist'));
 
 let currentVersion;
 
-require('./util/getLatestVersion')
-    .then(version => currentVersion = version)
-    .then(() => console.log(`Current version: ${currentVersion}`));
+
+const updateCurrentVersion = () => {
+  require('./util/getLatestVersion')
+      .then(version => currentVersion = version)
+      .then(() => console.log(`Current version: ${currentVersion}`));
+}
+
+updateCurrentVersion();
+cron.schedule('0 12 * * *', updateCurrentVersion);
+
 
 app.get('/champions/:champion', (req, res) => {
   const champion = req.params.champion;
