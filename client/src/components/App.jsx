@@ -6,6 +6,9 @@ import axios from "axios";
 
 import ChampionSummary from "./ChampionSummary";
 import Ability from "./Ability";
+import { get_version } from "../util/get_version";
+import { get_champions } from "../util/get_champions";
+import { get_champion } from "../util/get_champion";
 
 const useLocalStorage = (storageKey, fallbackState) => {
   const [value, setValue] = useState(
@@ -23,22 +26,25 @@ export default function App() {
   const [champions, setChampions] = useState([]);
   const [champion, setChampion] = useLocalStorage("champion", "");
   const [championData, setChampionData] = useState("");
-  const [version, setVersion] = useState("Unknown");
+  const [version, setVersion] = useState("");
 
   useEffect(() => {
-    axios.get("/version")
-      .then(({ data }) => setVersion(data));
-
-    axios.get("/champions")
-      .then(({ data }) => setChampions(data));
+    get_version().then(setVersion);
   }, []);
 
   useEffect(() => {
-    if (champion) {
-      axios.get(`/champions/${champion}`)
-        .then(({ data }) => setChampionData(data));
+    if (version) {
+      get_champions("13.11.1").then(setChampions);
     }
-  }, [champion]);
+  }, [version])
+
+  useEffect(() => {
+    if (champion && version) {
+      get_champion(champion, version).then(setChampionData);
+      // axios.get(`/champions/${champion}`)
+      //   .then(({ data }) => { setChampionData(data); console.log(data) });
+    }
+  }, [champion, version]);
 
   const handleChampionChange = (event, { name }) => {
     setChampion(name);
@@ -46,7 +52,7 @@ export default function App() {
 
   return (
     <>
-      <Typography 
+      <Typography
         style={{
           position: "absolute",
           padding: "1em",
@@ -70,22 +76,22 @@ export default function App() {
           style={{ marginTop: "1em" }}
         />
 
-        {championData && 
-          <ChampionSummary 
-            championData={championData} 
+        {championData &&
+          <ChampionSummary
+            championData={championData}
             version={version} />}
 
-        {championData && 
-          <Ability 
-            spell={championData.passive} 
+        {championData &&
+          <Ability
+            spell={championData.passive}
             abilityButton="P"
             version={version} />}
 
-        {championData && 
-          championData.spells.map((spell, key) => 
-            <Ability 
+        {championData &&
+          championData.spells.map((spell, key) =>
+            <Ability
               spell={spell}
-              abilityButton={{ 0: 'Q', 1: 'W', 2: 'E', 3: 'R' }[key]} 
+              abilityButton={{ 0: 'Q', 1: 'W', 2: 'E', 3: 'R' }[key]}
               version={version}
               key={spell.id} />)}
 
@@ -97,5 +103,5 @@ export default function App() {
 
       </div>
     </>
-  );  
+  );
 }
